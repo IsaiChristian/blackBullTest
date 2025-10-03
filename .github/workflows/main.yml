@@ -59,7 +59,7 @@ jobs:
           name: lcov.info
           path: coverage/lcov.info
 
-  coverage_report:
+    coverage_report:
     name: Generate & Publish Coverage Report
     needs: test
     runs-on: ubuntu-latest
@@ -84,9 +84,9 @@ jobs:
       - name: Generate HTML report & extract stats
         id: coverage
         run: |
+          mkdir -p coverage/html
           genhtml coverage/lcov.info --output-directory coverage/html > genhtml-summary.txt
           cat genhtml-summary.txt
-          # Parse summary for coverage %
           total_lines=$(grep "lines......:" genhtml-summary.txt | awk '{print $2}')
           covered=$(grep "lines......:" genhtml-summary.txt | awk '{print $3}')
           percent=$(grep "lines......:" genhtml-summary.txt | awk '{print $4}')
@@ -94,20 +94,45 @@ jobs:
           echo "covered=$covered" >> $GITHUB_OUTPUT
           echo "percent=$percent" >> $GITHUB_OUTPUT
 
+      - name: Verify HTML generation
+        run: |
+          echo "=== Generated files in coverage/html ==="
+          ls -la coverage/html/
+
+      - name: Disable Jekyll and clean deployment
+        run: |
+          # Create .nojekyll to disable Jekyll processing
+          touch coverage/html/.nojekyll
+          # Remove any README.md that might be in the deployment dir
+          find coverage/html -name "README.md" -delete
+          echo "✅ Created .nojekyll file to disable Jekyll processing"
+
       - name: Upload HTML coverage report (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
           path: coverage/html
 
-      - name: Deploy coverage report to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: coverage/html
           clean: true
+          clean-exclude: |
+            .nojekyll
+          single-commit: true
 
-      # Coverage comment - only for pull requests
+      - name: Verify deployment files
+        run: |
+          echo "📋 Files that should be in gh-pages branch:"
+          echo "   - index.html (coverage report)"
+          echo "   - .nojekyll (disables Jekyll processing)"
+          echo "   - No README.md files"
+          echo ""
+          echo "🔗 Your coverage report URL:"
+          echo "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+
       - name: Report code coverage with summary
         if: ${{ github.event_name == 'pull_request' }}
         uses: zgosalvez/github-actions-report-lcov@v4
@@ -126,9 +151,8 @@ jobs:
             - Cubiertas: ${{ steps.coverage.outputs.covered }}
             - Cobertura global: ${{ steps.coverage.outputs.percent }}
 
-            🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.html)
+            🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
 
-      # Add coverage summary to workflow for both push and PR (less intrusive than comments)
       - name: Add coverage summary to job
         run: |
           echo "### 📊 Code Coverage Report" >> $GITHUB_STEP_SUMMARY
@@ -137,4 +161,4 @@ jobs:
           echo "- Cubiertas: ${{ steps.coverage.outputs.covered }}" >> $GITHUB_STEP_SUMMARY
           echo "- Cobertura global: ${{ steps.coverage.outputs.percent }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.html)" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY
