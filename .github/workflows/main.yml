@@ -113,8 +113,8 @@ jobs:
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}
           update-comment: true
-          title: "📊 Code Coverage Report"
-          message: |
+          title-prefix: "📊 Code Coverage Report"
+          additional-message: |
             ✅ Cobertura generada correctamente
 
             **Resumen:**
