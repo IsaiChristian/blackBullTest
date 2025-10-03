@@ -14,7 +14,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Cache Flutter SDK
       - name: Cache Flutter SDK
+        uses: actions/cache@v4.3.0
+        with:
+          path: ~/.flutter
+          key: ${{ runner.os }}-flutter-3.35.5
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.5'
+          channel: 'stable'
+          cache: true
+
+      # Cache pub dependencies
+      - name: Cache Pub dependencies
         uses: actions/cache@v4.3.0
         with:
           path: ~/.pub-cache
@@ -22,17 +37,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.35.5'
-          channel: 'stable'
-
       - name: Install dependencies
         run: flutter pub get
 
       - name: Analyze
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/lcov.info
