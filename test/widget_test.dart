@@ -12,8 +12,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:black_bull/main.dart';
 
 void main() async {
+  setUpAll(() async {
+    // Mock dotenv loading
+    dotenv.loadFromString(envString: 'TMB_API=TEST_API_KEY');
+  });
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await dotenv.load(fileName: "secrets/.env");
     await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
