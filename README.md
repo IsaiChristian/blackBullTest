@@ -1,3 +1,4 @@
+[![Flutter CI](https://github.com/IsaiChristian/blackBullTest/actions/workflows/main.yml/badge.svg)](https://github.com/IsaiChristian/blackBullTest/actions/workflows/main.yml)
 # black_bull
 
 A new Flutter project.
