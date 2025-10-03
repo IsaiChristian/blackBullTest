@@ -59,7 +59,7 @@ jobs:
           name: lcov.info
           path: coverage/lcov.info
 
-    coverage_report:
+  coverage_report:
     name: Generate & Publish Coverage Report
     needs: test
     runs-on: ubuntu-latest
