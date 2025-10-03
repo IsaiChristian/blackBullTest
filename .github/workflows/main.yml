@@ -14,14 +14,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      # Crear archivo .env para evitar warning
+        
+      # Create .env file to avoid warnings
       - name: Create .env file
         run: |
           mkdir -p secrets
           echo "TMB_API=9182d61f6e2362696ccfd187efde4fa7" > secrets/.env
+          
       # Cache Flutter SDK
       - name: Cache Flutter SDK
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v4
         with:
           path: ~/.flutter
           key: ${{ runner.os }}-flutter-3.35.5
@@ -35,7 +37,7 @@ jobs:
 
       # Cache pub dependencies
       - name: Cache Pub dependencies
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v4
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -99,13 +101,15 @@ jobs:
           path: coverage/html
 
       - name: Deploy coverage report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: coverage/html
-          publish_branch: gh-pages
+          branch: gh-pages
+          folder: coverage/html
+          clean: true
 
+      # Coverage comment - only for pull requests
       - name: Report code coverage with summary
+        if: ${{ github.event_name == 'pull_request' }}
         uses: zgosalvez/github-actions-report-lcov@v4
         with:
           coverage-files: coverage/lcov.info
@@ -123,3 +127,14 @@ jobs:
             - Cobertura global: ${{ steps.coverage.outputs.percent }}
 
             🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.html)
+
+      # Add coverage summary to workflow for both push and PR (less intrusive than comments)
+      - name: Add coverage summary to job
+        run: |
+          echo "### 📊 Code Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "**Resumen:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Líneas totales: ${{ steps.coverage.outputs.total_lines }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Cubiertas: ${{ steps.coverage.outputs.covered }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Cobertura global: ${{ steps.coverage.outputs.percent }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.html)" >> $GITHUB_STEP_SUMMARY
