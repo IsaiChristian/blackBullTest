@@ -14,7 +14,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      # Crear archivo .env para evitar warning
+      - name: Create .env file
+        run: |
+          mkdir -p secrets
+          echo "TMB_API=9182d61f6e2362696ccfd187efde4fa7" > secrets/.env
       # Cache Flutter SDK
       - name: Cache Flutter SDK
         uses: actions/cache@v4.3.0
