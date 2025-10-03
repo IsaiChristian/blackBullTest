@@ -1,10 +1,14 @@
 import 'package:black_bull/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
+  setUpAll(() async {
+    // Mock dotenv loading
+    dotenv.loadFromString(envString: 'TMB_API=TEST_API_KEY');
+  });
   testWidgets('MyApp displays API key in AppBar title', (
     WidgetTester tester,
   ) async {
