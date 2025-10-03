@@ -14,16 +14,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
-      # Create .env file to avoid warnings
+
+      # Crear archivo .env para evitar warning
       - name: Create .env file
         run: |
           mkdir -p secrets
           echo "TMB_API=9182d61f6e2362696ccfd187efde4fa7" > secrets/.env
-          
+
       # Cache Flutter SDK
       - name: Cache Flutter SDK
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           path: ~/.flutter
           key: ${{ runner.os }}-flutter-3.35.5
@@ -37,7 +37,7 @@ jobs:
 
       # Cache pub dependencies
       - name: Cache Pub dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
@@ -84,28 +84,18 @@ jobs:
       - name: Generate HTML report & extract stats
         id: coverage
         run: |
-          mkdir -p coverage/html
           genhtml coverage/lcov.info --output-directory coverage/html > genhtml-summary.txt
           cat genhtml-summary.txt
-          total_lines=$(grep "lines......:" genhtml-summary.txt | awk '{print $2}')
-          covered=$(grep "lines......:" genhtml-summary.txt | awk '{print $3}')
-          percent=$(grep "lines......:" genhtml-summary.txt | awk '{print $4}')
-          echo "total_lines=$total_lines" >> $GITHUB_OUTPUT
+          # Parse summary robustly
+          read total covered percent <<< $(grep "lines......:" genhtml-summary.txt | awk -F'[ /%]+' '{print $2, $3, $4}')
+          echo "total_lines=$total" >> $GITHUB_OUTPUT
           echo "covered=$covered" >> $GITHUB_OUTPUT
           echo "percent=$percent" >> $GITHUB_OUTPUT
 
-      - name: Verify HTML generation
+      - name: Generate coverage badge
         run: |
-          echo "=== Generated files in coverage/html ==="
-          ls -la coverage/html/
-
-      - name: Disable Jekyll and clean deployment
-        run: |
-          # Create .nojekyll to disable Jekyll processing
-          touch coverage/html/.nojekyll
-          # Remove any README.md that might be in the deployment dir
-          find coverage/html -name "README.md" -delete
-          echo "✅ Created .nojekyll file to disable Jekyll processing"
+          npm install -g lcov-badge
+          lcov-badge -f coverage/lcov.info -o coverage/html/badge.svg
 
       - name: Upload HTML coverage report (artifact)
         uses: actions/upload-artifact@v4
@@ -113,28 +103,14 @@ jobs:
           name: coverage-html
           path: coverage/html
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy coverage report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: coverage/html
-          clean: true
-          clean-exclude: |
-            .nojekyll
-          single-commit: true
-
-      - name: Verify deployment files
-        run: |
-          echo "📋 Files that should be in gh-pages branch:"
-          echo "   - index.html (coverage report)"
-          echo "   - .nojekyll (disables Jekyll processing)"
-          echo "   - No README.md files"
-          echo ""
-          echo "🔗 Your coverage report URL:"
-          echo "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: coverage/html
+          publish_branch: gh-pages
 
       - name: Report code coverage with summary
-        if: ${{ github.event_name == 'pull_request' }}
         uses: zgosalvez/github-actions-report-lcov@v4
         with:
           coverage-files: coverage/lcov.info
@@ -142,23 +118,14 @@ jobs:
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}
           update-comment: true
-          title-prefix: "📊 Code Coverage Report"
-          additional-message: |
+          title: "📊 Code Coverage Report"
+          message: |
             ✅ Cobertura generada correctamente
 
             **Resumen:**
             - Líneas totales: ${{ steps.coverage.outputs.total_lines }}
             - Cubiertas: ${{ steps.coverage.outputs.covered }}
-            - Cobertura global: ${{ steps.coverage.outputs.percent }}
+            - Cobertura global: ${{ steps.coverage.outputs.percent }}%
 
-            🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
-
-      - name: Add coverage summary to job
-        run: |
-          echo "### 📊 Code Coverage Report" >> $GITHUB_STEP_SUMMARY
-          echo "**Resumen:**" >> $GITHUB_STEP_SUMMARY
-          echo "- Líneas totales: ${{ steps.coverage.outputs.total_lines }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Cubiertas: ${{ steps.coverage.outputs.covered }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Cobertura global: ${{ steps.coverage.outputs.percent }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)" >> $GITHUB_STEP_SUMMARY
+            🔗 [Ver reporte HTML completo](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.html)
+            ![Coverage Badge](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/badge.svg)
