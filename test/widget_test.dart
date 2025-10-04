@@ -17,7 +17,7 @@ void main() async {
     dotenv.loadFromString(envString: 'TMB_API=TEST_API_KEY');
   });
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const MovieExplorer());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
