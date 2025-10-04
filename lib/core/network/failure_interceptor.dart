@@ -11,8 +11,7 @@ class FailureInterceptor extends Interceptor {
         err.response?.data.toString() ?? err.message ?? "Unknown Dio error";
 
     LoggerService.error("Dio", message, err.stackTrace);
-    print("Status code from interceptor:");
-    print(statusCode);
+
     if (statusCode == 401) {
       GlobalErrorBus.dispatch(AppError("unauthorized", "Session expired"));
     } else if (statusCode == 500) {

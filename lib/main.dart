@@ -45,7 +45,7 @@ class MovieExplorer extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        "Blocking Error: \n${state.runtimeType} - ${state}",
+                        "Blocking Error: \n${state.runtimeType} - $state",
                       ),
                     ],
                   ),

@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:black_bull/core/error/global_error_bus.dart';
-import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -19,7 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onErrorReceived(AppErrorReceived event, Emitter<AppState> emit) {
     final error = event.error;
-    print("AppBloc received error: ${error.type} - ${error.message}");
+
     switch (error.type) {
       case "unauthorized":
         emit(AppSessionExpired(error.message));

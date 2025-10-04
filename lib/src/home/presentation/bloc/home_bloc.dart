@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:black_bull/data/repositories/movies_repository_imp.dart';
 import 'package:black_bull/domain/entities/movie_entity.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -44,7 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final newMovies = await movieRepository.getPopularMovies(page: nextPage);
 
-    newMovies.fold((l) => print("Error loading more: ${l.message}"), (r) {
+    newMovies.fold((l) => emit(HomeError()), (r) {
       final updatedMovies = List<MovieEntity>.from(homeReadyState.movies)
         ..addAll(r.results);
 
