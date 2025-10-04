@@ -1,4 +1,6 @@
 import 'package:black_bull/core/error/failure.dart';
+import 'package:black_bull/core/error/logger_service.dart';
+import 'package:black_bull/core/network/safe_call.dart';
 import 'package:black_bull/data/mappers/popular_movies_mapper.dart';
 import 'package:black_bull/data/mappers/search_response_mapper.dart';
 import 'package:black_bull/data/models/popular_movies_model.dart';
@@ -18,19 +20,25 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<Either<Failure, PopularMoviesResponseEntity>> getPopularMovies({
     int page = 1,
   }) async {
-    try {
-      print("Fetching popular movies, page $page");
+    final response = await safeCall(() async {
       final response = await dio.get(
         "/movie/popular",
         queryParameters: {"page": page},
       );
+      return response.data;
+    });
+    PopularMoviesResponseModel? model;
+    response.fold((l) {
+      LoggerService.error("Repository", 'Failed to parse popular movies');
+      return UnexpectedFailure('message');
+    }, (r) => model = PopularMoviesResponseModel.fromJson(r));
+    if (model == null) {
+      LoggerService.error("Repository", 'Failed to parse popular movies');
 
-      final model = PopularMoviesResponseModel.fromJson(response.data);
-      return Right(model.toEntity());
-    } on DioException catch (e) {
-      return Left(ServerFailure(e.message!));
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(UnexpectedFailure("Failed to parse popular movies"));
+    } else {
+      final modelEntity = model!.toEntity();
+      return Right(modelEntity);
     }
   }
 

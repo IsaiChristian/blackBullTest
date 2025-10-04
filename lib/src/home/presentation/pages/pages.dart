@@ -45,10 +45,10 @@ class _HomePageViewState extends State<HomePageView> {
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent ) {
+        _scrollController.position.maxScrollExtent - 200) {
       // Debounce to prevent multiple rapid calls
         context.read<HomeBloc>().add(HomeShowLoading());
-      print("peticion de mas datos");
+      
       
         context.read<HomeBloc>().add(HomeLoadMore());
       
@@ -78,7 +78,7 @@ void didChangeDependencies() {
       );
     }
 if (currentState is HomeReady) {
-   print(currentState.isLoadingMore);
+   
     return Scaffold(
       appBar: BbAppBar(),
       body: SingleChildScrollView(
@@ -155,6 +155,14 @@ if (currentState is HomeReady) {
               ),
           ],
         ),
+      ),
+    );
+  }
+  if (currentState is HomeError) {
+    return Scaffold(
+      appBar: BbAppBar(),
+      body: Center(
+        child: Text('An error occurred. Please try again later.'),
       ),
     );
   }

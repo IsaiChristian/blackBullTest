@@ -1,0 +1,43 @@
+import 'dart:async';
+
+import 'package:black_bull/core/error/global_error_bus.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
+part 'app_event.dart';
+part 'app_state.dart';
+
+class AppBloc extends Bloc<AppEvent, AppState> {
+  late final StreamSubscription _errorSub;
+  AppBloc() : super(AppInitial()) {
+    _errorSub = GlobalErrorBus.stream.listen((appError) {
+      add(AppErrorReceived(appError));
+    });
+
+    on<AppErrorReceived>(_onErrorReceived);
+  }
+
+  void _onErrorReceived(AppErrorReceived event, Emitter<AppState> emit) {
+    final error = event.error;
+    print("AppBloc received error: ${error.type} - ${error.message}");
+    switch (error.type) {
+      case "unauthorized":
+        emit(AppSessionExpired(error.message));
+        break;
+      case "network":
+        emit(AppNetworkError(error.message));
+        break;
+      case "server_error":
+        emit(AppServerError(error.message));
+        break;
+      default:
+        emit(AppUnknownError(error.message));
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _errorSub.cancel();
+    return super.close();
+  }
+}

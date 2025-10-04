@@ -1,13 +1,29 @@
 import 'package:black_bull/core/error/error_mapper.dart';
+import 'package:black_bull/core/error/global_error_bus.dart';
+import 'package:black_bull/core/error/logger_service.dart';
 import 'package:dio/dio.dart';
 
 class FailureInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    print(
-      "❌ DioError: ${err.response?.statusCode} ${err.response?.statusMessage}",
-    );
-    print("❌ Data: ${err.response?.data}");
+    final statusCode = err.response?.statusCode;
+    final message =
+        err.response?.data.toString() ?? err.message ?? "Unknown Dio error";
+
+    LoggerService.error("Dio", message, err.stackTrace);
+    print("Status code from interceptor:");
+    print(statusCode);
+    if (statusCode == 401) {
+      GlobalErrorBus.dispatch(AppError("unauthorized", "Session expired"));
+    } else if (statusCode == 500) {
+      GlobalErrorBus.dispatch(
+        AppError("server_error", "Internal Server Error"),
+      );
+    } else if (statusCode == 404) {
+      GlobalErrorBus.dispatch(AppError("server_error", "Resource Not Found"));
+    } else if (err.type == DioExceptionType.connectionTimeout) {
+      GlobalErrorBus.dispatch(AppError("network", "Connection Timeout"));
+    }
     final failure = mapDioException(err);
 
     final newError = DioException(

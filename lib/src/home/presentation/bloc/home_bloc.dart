@@ -23,36 +23,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> _homeInit(HomeInit event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
-    // wait 2 secs
 
     final popularMovies = await movieRepository.getPopularMovies();
     await Future.delayed(Duration(seconds: 2));
     popularMovies.fold(
-      (l) => print("Error: ${l.message}"),
+      (l) => emit(HomeError()),
       (r) => emit(
         HomeReady(movies: r.results, page: r.page, totalPages: r.totalPages),
       ),
     );
-
-    print("llegamos");
   }
 
   FutureOr<void> _homeLoadMore(
     HomeLoadMore event,
     Emitter<HomeState> emit,
   ) async {
-    print("HOOOOOOOOOOOOOOOOOOLA 222");
     if (state is! HomeReady) return;
     final homeReadyState = state as HomeReady;
     final nextPage = homeReadyState.page + 1;
 
-    print("HOOOOOOOOOOOOOOOOOOLA loading");
     final newMovies = await movieRepository.getPopularMovies(page: nextPage);
 
-    newMovies.fold((l) => print("Error loading more: $l"), (r) {
+    newMovies.fold((l) => print("Error loading more: ${l.message}"), (r) {
       final updatedMovies = List<MovieEntity>.from(homeReadyState.movies)
         ..addAll(r.results);
-      print("HOOOOOOOOOOOOOOOOOOLA 333");
+
       emit(
         HomeReady(
           movies: updatedMovies,

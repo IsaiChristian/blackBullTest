@@ -15,6 +15,10 @@ class HomeLoading extends HomeState {
   const HomeLoading();
 }
 
+class HomeError extends HomeState {
+  const HomeError();
+}
+
 class HomeReady extends HomeState {
   final List<MovieEntity> movies;
   final int page;
