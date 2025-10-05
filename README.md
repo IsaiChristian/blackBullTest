@@ -48,7 +48,9 @@ I also took tried to make the app pop visually and decided it to brand it with B
 | ![Blocking Error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/blocking_error.jpg) |
 | **Blocking Error Screen** |
 
-![working_video.mp4](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/working_video.mp4)
+## Video
+
+https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/working_video.mp4
 
 ## Getting Started
 
@@ -89,5 +91,44 @@ lib
     └── main.dart <-------------------- Everything starts Here.
 ```
 note: Test Folder Structure should mirror Lib.
+
+## Technical Decisions 
+
+**Why clean architecture?**
+I find it very straight forward once you know what goes where. It also forces to think about each layer and how the information should flow.
+
+**Why Bloc?**
+In the same way bloc is also more verbose, but gives a lot more control once everything is setup. 
+
+**Why Dio?**
+Dio offers interceptors which are very useful to have just one place to handle everything HTTP related. Having only 1 place for this helps for logging / debugging
+
+**What is the Global error bus?**
+Its a way for us to dispatch errors from wherever we want to the AppBloC helping with interacting from outside. 
+
+**How do you error handle?**
+We used a functional way of doing it called Either Type 
+``
+Either<L, R> represents a value that can be one of two possible types:
+
+Left (L) → usually represents a failure or error.
+
+Right (R) → represents a success or valid result.
+``
+
+That way you are forced to always aknowledge the Failure or Error path. 
+
+**Is That why the safeCalls?**
+Yeah! a little helper to write less and keep the power of this pattern. 
+
+**Why adding a infinite scroll?**
+I wanted a different way to show how to handle loading.
+They way it works is by keeping check of the scroll position, once we are close enough we call for the next page and append to the list. 
+
+
+**Is the app prod ready?**
+Its close but not really , no production app would have any APIKEY in the code (no matter if we obfuscate or add it on runtime). 
+most apps would have AUTH which brings a level of complexity that we are skipping here.
+
 
 
