@@ -4,7 +4,7 @@
 
 # BlackBull MovieDB
 
-A Flutter test for Christian Isai.
+A Flutter movie browsing application showcasing modern development practices and clean architecture.
 
 ## Preface
 
@@ -15,10 +15,18 @@ to try some of the latest features, including some experimental ones.
 Other things that I decided to practice while doing your test were:
 - Setting up a worker on my own VPS to run the GitHub Actions (You can click on the badge at the top to see each run!)
 - Using GitHub Actions to perform an analysis for Flutter tests (I also printed the results with LCOV)
-- Playing with Animations without the use of lottie or rive.
-
+- Playing with Animations without the use of lottie or rive
 
 I also tried to make the app pop visually and decided to brand it with BlackBull. I hope it looks good to you too!
+
+## Features
+
+- Browse popular movies with infinite scroll
+- Mark movies as favorites and manage your collection
+- Search for movies by title
+- Responsive UI with custom animations
+- Smart error handling (blocking and non-blocking states)
+- Comprehensive test coverage
 
 # Screenshots and Video
 
@@ -51,82 +59,240 @@ I also tried to make the app pop visually and decided to brand it with BlackBull
 | ![Blocking Error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/blocking_error.jpg) |
 | **Blocking Error Screen** |
 
-## Video
+## Video Demo
 
 https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/working_video.mp4
 
 ## Getting Started
 
-After cloning the repository, the first thing you'll need is to create your .env file inside secrets with a valid [Themoviedb](https://www.themoviedb.org/) API key.
+### Prerequisites
 
-In this project, we are using `--enable-experiment=dot-shorthands`. For you to be able to run/build, you'll have to add that parameter to your run like this:
+- Flutter SDK (3.35.5 or higher recommended)
+- Dart SDK (2.9.2 or higher recommended)
+- A code editor (VS Code, Android Studio, or IntelliJ IDEA)
+- iOS Simulator or Android Emulator (or a physical device)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/IsaiChristian/blackBullTest.git
+   cd blackBullTest
+   ```
+
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Set up your API key**
+   
+   Create a `.env` file in the `secrets` directory with your [TheMovieDB](https://www.themoviedb.org/) API key:
+   
+   ```bash
+   
+   # Create the .env file
+   touch secrets/.env
+   ```
+   
+   Add your API key to `secrets/.env`:
+   ```env
+   TMDB_API_KEY=your_api_key_here
+   ```
+   
+   > **Getting an API key:** Visit [TheMovieDB](https://www.themoviedb.org/), create a free account, go to Settings → API, and request an API key.
+
+4. **Run the app**
+   
+   This project uses experimental features, so you'll need to enable them:
+   ```bash
+   flutter run --enable-experiment=dot-shorthands
+   ```
+   
+   Or for a specific device:
+   ```bash
+   # List available devices
+   flutter devices
+   
+   # Run on a specific device
+   flutter run --enable-experiment=dot-shorthands -d <device-id>
+   ```
+
+### Running Tests
 
 ```bash
-flutter run --enable-experiment=dot-shorthands
+# Run all tests
+flutter test --enable-experiment=dot-shorthands
+
+# Run tests with coverage
+flutter test --enable-experiment=dot-shorthands --coverage
+
+# View coverage report (requires lcov)
+genhtml coverage/lcov.info -o coverage/html
+open coverage/html/index.html
 ```
+
+### Building for Release
+
+**Android:**
+```bash
+flutter build apk --enable-experiment=dot-shorthands --release
+```
+
+**iOS:**
+```bash
+flutter build ios --enable-experiment=dot-shorthands --release
+```
+
+### VS Code Configuration
+
+If you're using VS Code, create a `launch.json` file to make running with experimental features easier:
+
+1. Create a `.vscode` folder in the project root (if it doesn't exist)
+2. Create a `launch.json` file inside `.vscode` with the following content:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter (Dev)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/src/main.dart",
+      "toolArgs": [
+        "--enable-experiment=dot-shorthands"
+      ]
+    },
+    {
+      "name": "Flutter (Profile)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/src/main.dart",
+      "toolArgs": [
+        "--enable-experiment=dot-shorthands"
+      ]
+    },
+    {
+      "name": "Flutter (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/src/main.dart",
+      "toolArgs": [
+        "--enable-experiment=dot-shorthands"
+      ]
+    }
+  ]
+}
+```
+
+Now you can run the app directly from VS Code's Run and Debug panel (or press `F5`) without typing the command every time!
+
+## Architecture
 
 We are using Clean Code Architecture with BLoC as the state management solution.
 
-Folder structure is as follows:
+### Project Structure
+
 ```plaintext
 lib
-├── core <----------------------------- Here we put everything shared across the app
-|   ├── di <--------------------------- Dependency injection
-|   ├── error <------------------------ Error and failures related (here we have the logger service and an error bus) 
-|   ├── network <---------------------- Network related
-|   ├── router 
-|   └── services <--------------------- Local services
-├── data <----------------------------- This layer is where data is gathered
-│   ├── mappers <---------------------- Quick transformations so we can move across layers easier
-│   ├── models  <---------------------- Models from DataSources, usually mirror the JSON  
-│   └── repositories <----------------- Implementation
-├── domain <--------------------------- This layer is where we prepare the info for the view
-│   ├── entities <--------------------- These usually mirror the info shown in the UI
-│   └── repositories <----------------- Abstractions here
-├── presentation <--------------------- Shared widgets 
-└── src <------------------------------ Convention below: each feature
-    ├── app <-------------------------- The only bloc with no page attached, used to control events that happen across the app (Auth/network)
-    ├── favorites\presentation
-    ├── home\presentation 
-    |   ├── bloc <--------------------- State management
-    |   ├── pages <-------------------- For when the feature uses a whole page
-    |   └── widgets <------------------ For reusable widgets (like favorite button)
-    ├── movie_detail\presentation
-    ├── search\presentation
-    └── main.dart <-------------------- Everything starts here
+├── core ──────────────────────────── Shared code across the app
+│   ├── di ────────────────────────── Dependency injection setup
+│   ├── error ─────────────────────── Error handling, failures, logger service, and error bus
+│   ├── network ───────────────────── Network configuration and interceptors
+│   ├── router ────────────────────── App navigation
+│   └── services ──────────────────── Local services (storage, etc.)
+├── data ──────────────────────────── Data layer - where data is gathered
+│   ├── mappers ───────────────────── Transformations between layers
+│   ├── models ────────────────────── Data models (usually mirror JSON structure)
+│   └── repositories ──────────────── Repository implementations
+├── domain ────────────────────────── Domain layer - business logic
+│   ├── entities ──────────────────── Business entities (mirror UI structure)
+│   └── repositories ──────────────── Repository abstractions
+├── presentation ──────────────────── Shared widgets across features
+└── src ───────────────────────────── Feature modules
+    ├── app ───────────────────────── Global app BLoC (auth, network events)
+    ├── favorites/presentation
+    ├── home/presentation
+    │   ├── bloc ──────────────────── State management
+    │   ├── pages ─────────────────── Full page screens
+    │   └── widgets ───────────────── Reusable feature widgets
+    ├── movie_detail/presentation
+    ├── search/presentation
+    └── main.dart ─────────────────── App entry point
 ```
-Note: Test folder structure should mirror lib.
+
+> **Note:** The test folder structure mirrors the lib folder for consistency.
 
 ## Technical Decisions 
 
-**Why clean architecture?**
-I find it very straightforward once you know what goes where. It also forces you to think about each layer and how the information should flow.
+### Why Clean Architecture?
+I find it very straightforward once you know what goes where. It also forces you to think about each layer and how the information should flow, making the codebase more maintainable and testable.
 
-**Why BLoC?**
-In the same way, BLoC is also more verbose, but it gives you a lot more control once everything is set up. 
+### Why BLoC?
+BLoC is more verbose than other state management solutions, but it gives you much more control once everything is set up. It provides a clear separation between business logic and UI, making the code easier to test and reason about.
 
-**Why Dio?**
-Dio offers interceptors, which are very useful for having just one place to handle everything HTTP-related. Having only one place for this helps with logging and debugging.
+### Why Dio?
+Dio offers interceptors, which are very useful for having just one place to handle everything HTTP-related. Having only one place for this helps with logging, debugging, and adding features like retry logic or authentication tokens.
 
-**What is the global error bus?**
-It's a way for us to dispatch errors from wherever we want to the AppBLoC, helping with interactions from outside. 
+### What is the Global Error Bus?
+It's a centralized way to dispatch errors from anywhere in the app to the AppBLoC. This helps with error handling and user notifications, especially when errors occur outside the normal UI flow.
 
-**How do you handle errors?**
-We use a functional approach called the Either type:
+### How Do You Handle Errors?
+We use a functional approach with the Either type:
 
 `Either<L, R>` represents a value that can be one of two possible types:
-- **Left (L)** → usually represents a failure or error
+- **Left (L)** → represents a failure or error
 - **Right (R)** → represents a success or valid result
 
-That way, you are forced to always acknowledge the failure or error path. 
+This pattern forces you to always acknowledge both the failure and success paths, making error handling explicit and harder to overlook.
 
-**Is that why you have safeCalls?**
-Yes! It's a little helper to write less code while keeping the power of this pattern. 
+### Is That Why You Have SafeCalls?
+Yes! SafeCalls are helper functions that reduce boilerplate while keeping the power of the Either pattern. They wrap try-catch blocks and automatically return Either types.
 
-**Why add infinite scroll?**
-I wanted a different way to show how to handle loading.
-The way it works is by keeping track of the scroll position. Once we are close enough, we call for the next page and append it to the list. 
+### Why Add Infinite Scroll?
+I wanted to demonstrate a different approach to loading states and pagination. The implementation tracks scroll position and automatically loads the next page when the user approaches the end of the list, providing a seamless browsing experience.
 
-**Is the app production-ready?**
-It's close, but not really. No production app would have any API key in the code (no matter if we obfuscate or add it at runtime). 
-Most apps would have authentication, which brings a level of complexity that we are skipping here.
+### Is the App Production-Ready?
+It's close, but not quite. A production app would need:
+- Secure API key management (backend proxy or secure key storage)
+- Proper authentication flow
+- More comprehensive error logging and analytics
+- Crash reporting
+- Performance monitoring
+- More extensive testing (integration and E2E tests)
+- Accessibility improvements
+- Internationalization support
+
+No production app should have API keys in the code, regardless of obfuscation or runtime injection methods.
+
+## Tech Stack
+
+- **Framework:** Flutter
+- **State Management:** BLoC (flutter_bloc)
+- **Networking:** Dio with interceptors
+- **Functional Programming:** dartz (Either type)
+- **Dependency Injection:** provider
+- **Routing:** go_router
+- **Local Storage:** shared_preferences 
+- **Testing:** mockito, bloc_test
+
+## Contributing
+
+This is a test project, but if you have suggestions or find issues, feel free to open an issue or submit a pull request!
+
+## License
+
+This project is for demonstration purposes. 
+Note: The BlackBull branding, logo, and all associated visual assets are proprietary and owned by BlackBull. All rights reserved.
+
+## Contact
+- Email: christian.isai@gmail.com
+- Phone: +52 961 290 9907
+- GitHub: IsaiChristian
+
+---
+
+Made with ❤️ and Flutter
