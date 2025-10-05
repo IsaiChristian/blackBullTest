@@ -10,7 +10,7 @@ import 'package:black_bull/data/models/search_response_model.dart';
 import 'package:black_bull/data/models/movie_detail_model.dart';
 import 'package:black_bull/data/repositories/movies_repository_imp.dart';
 
-import 'mocks.mocks.mocks.dart';
+import '../../mocks.mocks.mocks.dart';
 
 class FakePopularMoviesResponseModel extends PopularMoviesResponseModel {
   FakePopularMoviesResponseModel()

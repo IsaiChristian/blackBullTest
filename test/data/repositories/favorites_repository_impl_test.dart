@@ -5,7 +5,7 @@ import 'package:black_bull/data/repositories/favorites_repository_impl.dart';
 import 'package:black_bull/core/error/failure.dart';
 import 'package:black_bull/domain/entities/movie_entity.dart';
 
-import 'mocks.mocks.mocks.dart';
+import '../../mocks.mocks.mocks.dart';
 
 void main() {
   late FavoriteRepositoryImpl repository;
