@@ -21,6 +21,23 @@ I also took tried to make the app pop visually and decided it to brand it with B
 ## Screenshots and video 
 
 
+![blocking_error](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/blocking_error.jpg)
+### Favorites
+![favorites_empty](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/favorites_empty.jpg)
+![favorites_filled](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/favorites_filled.jpg)
+### Home
+![home](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/home.jpg)
+![home_loading_init](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/home_loading_init.jpg)
+![home_loading_more](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/home_loading_more.jpg)
+![home_not_blocking_error](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/home_not_blocking_error.jpg)
+![movie_detail](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/movie_detail.jpg)
+### Search
+![search](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/search.jpg)
+![search_active](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/search_active.jpg)
+![search_query_error](https://github.com/IsaiChristian/blackBullTest/tree/main/screenshots/search_query_error.jpg)
+
+![working_video.mp4](https://github.com/IsaiChristian/blackBullTest/blob/main/screenshots/working_video.mp4)
+
 ## Getting Started
 
 After cloning the repository the first thing you'll need is to create your .env file inside secrets with a valid [Themoviedb](https://www.themoviedb.org/)
