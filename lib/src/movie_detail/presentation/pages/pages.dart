@@ -55,11 +55,11 @@ class MovieDetailsView extends StatelessWidget {
                 mainAxisSize: .max,
                 crossAxisAlignment: .start,
                 children: [
-Wrap(
-              spacing: 8.0, 
-              runSpacing: 4.0, 
-              children: state.movieDetail.genres.map((tag) => _buildTagChip(tag)).toList(),
-            ),                  
+                  Wrap(
+                    spacing: 8.0, 
+                    runSpacing: 4.0, 
+                    children: state.movieDetail.genres.map((tag) => _buildTagChip(tag)).toList(),
+                  ),                  
                   Text(state.movieDetail.title, style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold, color: Colors.white), textAlign: .left,),
                   Text('Release Date: ${state.movieDetail.releaseDate}', style: TextStyle(fontSize: 16, color: Colors.white), textAlign: .left,),
                   SizedBox(height: 8,),

@@ -5,7 +5,6 @@ import 'package:black_bull/data/mappers/movie_mapper.dart';
 import 'package:black_bull/data/mappers/popular_movies_mapper.dart';
 import 'package:black_bull/data/mappers/search_response_mapper.dart';
 import 'package:black_bull/data/models/movie_detail_model.dart';
-import 'package:black_bull/data/models/movie_model.dart';
 import 'package:black_bull/data/models/popular_movies_model.dart';
 import 'package:black_bull/data/models/search_response_model.dart';
 import 'package:black_bull/domain/entities/movie_entity.dart';

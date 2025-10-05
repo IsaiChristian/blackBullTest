@@ -8,10 +8,10 @@ abstract class SearchEvent extends Equatable {
 
 class SearchSubmitted extends SearchEvent {
   final String query;
-  SearchSubmitted(this.query);
+  const SearchSubmitted(this.query);
 }
 
 class SearchTextChanged extends SearchEvent {
   final String query;
-  SearchTextChanged(this.query);
+  const SearchTextChanged(this.query);
 }
