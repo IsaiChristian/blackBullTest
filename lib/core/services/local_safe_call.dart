@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart'; // Assuming you're using dartz for Either
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Define a base Failure class and some concrete Failure types
 // (You might already have these from your Dio example)
@@ -9,12 +8,12 @@ abstract class Failure {
 }
 
 class UnexpectedFailure extends Failure {
-  UnexpectedFailure(String message) : super(message);
+  UnexpectedFailure(super.message);
 }
 
 // You might add specific SharedPreferences related failures if needed
 class SharedPreferencesFailure extends Failure {
-  SharedPreferencesFailure(String message) : super(message);
+  SharedPreferencesFailure(super.message);
 }
 
 // A simple LoggerService stub for demonstration

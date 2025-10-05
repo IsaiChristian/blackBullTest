@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:black_bull/data/repositories/favorites_repository_impl.dart';
 import 'package:black_bull/domain/entities/movie_entity.dart';
