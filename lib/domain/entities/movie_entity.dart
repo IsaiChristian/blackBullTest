@@ -1,4 +1,6 @@
-class MovieEntity {
+import 'package:black_bull/core/services/local_storage_service.dart';
+
+class MovieEntity implements JsonConvertible {
   final int id;
   final String posterPath;
   final String title;
@@ -16,4 +18,29 @@ class MovieEntity {
     required this.rating,
     required this.genres,
   });
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'posterPath': posterPath,
+      'title': title,
+      'releaseDate': releaseDate,
+      'synopsis': synopsis,
+      'rating': rating,
+      'genres': genres,
+    };
+  }
+
+  // Create a MovieEntity instance from a Map
+  factory MovieEntity.fromJson(Map<String, dynamic> json) {
+    return MovieEntity(
+      id: json['id'] as int,
+      posterPath: json['posterPath'] as String,
+      title: json['title'] as String,
+      releaseDate: json['releaseDate'] as String,
+      synopsis: json['synopsis'] as String,
+      rating: json['rating'] as double,
+      genres: List<String>.from(json['genres'] as List),
+    );
+  }
 }

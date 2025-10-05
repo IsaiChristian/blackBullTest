@@ -47,6 +47,7 @@ dependencies:
   bloc_event_transformers: ^2.0.0
   cached_network_image: ^3.4.1
   bloc_concurrency: ^0.3.0
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:

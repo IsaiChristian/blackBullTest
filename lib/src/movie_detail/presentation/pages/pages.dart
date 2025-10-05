@@ -1,5 +1,6 @@
 import 'package:black_bull/data/repositories/movies_repository_imp.dart';
 import 'package:black_bull/presentation/widgets/bb_app_bar.dart';
+import 'package:black_bull/src/favorites/presentation/widgets/favorite_movie.dart';
 import 'package:black_bull/src/movie_detail/presentation/bloc/movie_detail_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -78,11 +79,8 @@ class MovieDetailsView extends StatelessWidget {
         Positioned(
           top: 175,
           right: 16,
-          child: FloatingActionButton(
-            onPressed: () {
-              // Acción al presionar el botón
-            },
-            child: Icon(Icons.favorite),
+          child: FavoriteMovie(
+            movie: state.movieDetail,
           ),
         ),]
     ),);
@@ -91,6 +89,8 @@ class MovieDetailsView extends StatelessWidget {
   }
   
 }
+
+
 Widget _buildTagChip(String tag) {
     return Chip(
       label: Text(tag),

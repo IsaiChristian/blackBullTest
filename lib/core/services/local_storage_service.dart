@@ -1,4 +1,13 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
+abstract class JsonConvertible {
+  Map<String, dynamic> toJson();
+}
+
+// You can create a type alias for a function that creates an object from JSON
+typedef FromJsonFactory<T> = T Function(Map<String, dynamic> json);
 
 class LocalStorageService {
   static SharedPreferences? _preferences;
@@ -19,5 +28,34 @@ class LocalStorageService {
     return _preferences!.remove(key);
   }
 
-  // Add more methods for other data types (int, bool, double, List<String>)
+  Future<bool> setJsonList<T extends JsonConvertible>(
+    String key,
+    List<T> list,
+  ) async {
+    await init();
+    final List<String> jsonStringList = list
+        .map((item) => jsonEncode(item.toJson()))
+        .toList();
+    return _preferences!.setStringList(key, jsonStringList);
+  }
+
+  // Generic method to get a list of objects (requires a factory function)
+  Future<List<T>> getJsonList<T extends JsonConvertible>(
+    String key,
+    FromJsonFactory<T> fromJson,
+  ) async {
+    await init();
+    final List<String>? jsonStringList = _preferences!.getStringList(key);
+
+    if (jsonStringList == null) {
+      return [];
+    }
+
+    return jsonStringList
+        .map(
+          (jsonString) =>
+              fromJson(jsonDecode(jsonString) as Map<String, dynamic>),
+        )
+        .toList();
+  }
 }
