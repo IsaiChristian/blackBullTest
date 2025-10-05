@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:black_bull/core/error/failure.dart';
 
 import 'package:black_bull/domain/entities/movie_entity.dart';
 import 'package:black_bull/domain/entities/popular_movies_entity.dart';
@@ -12,14 +10,12 @@ import 'package:black_bull/data/models/search_response_model.dart';
 import 'package:black_bull/data/models/movie_detail_model.dart';
 import 'package:black_bull/data/repositories/movies_repository_imp.dart';
 
-import './mocks.mocks.dart';
 import 'mocks.mocks.mocks.dart';
 
 class FakePopularMoviesResponseModel extends PopularMoviesResponseModel {
   FakePopularMoviesResponseModel()
     : super(page: 1, results: [], totalPages: 1, totalResults: 0);
 
-  @override
   PopularMoviesResponseEntity toEntity() => PopularMoviesResponseEntity(
     page: 1,
     results: [],
@@ -32,7 +28,6 @@ class FakeSearchResponseModel extends SearchResponseModel {
   FakeSearchResponseModel()
     : super(page: 1, results: [], totalPages: 1, totalResults: 0);
 
-  @override
   SearchResponseEntity toEntity() => SearchResponseEntity(
     page: 1,
     results: [],
@@ -69,7 +64,6 @@ class FakeMovieDetail extends MovieDetail {
         video: false,
       );
 
-  @override
   MovieEntity toEntity() => MovieEntity(
     id: 1,
     title: "Fake Movie",
