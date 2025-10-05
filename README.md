@@ -8,15 +8,18 @@ A Flutter test for Christian Isai.
 
 ## Preface
 
-Hi I'm Christian Isai thanks for your consideration for the position. 
-Somethings to considere while reviewing this test. I took the opportunitie 
-to try some of the latest futures including some experimental. 
+Hi, I'm Christian Isai. Thanks for your consideration for the position. 
+Something to consider while reviewing this test: I took the opportunity 
+to try some of the latest features, including some experimental ones. 
 
-Other things that I decided to practice while doing your test was:
-- Setting a worker in my own VPS to run the github Actions (You can click on the little badge on top to see the each run!)
-- Using github actions to perform an analysis for flutter test, (I also printed the results with LCOV)
+Other things that I decided to practice while doing your test were:
+- Setting up a worker on my own VPS to run the GitHub Actions (You can click on the badge at the top to see each run!)
+- Using GitHub Actions to perform an analysis for Flutter tests (I also printed the results with LCOV)
+- Playing with Animations without the use of lottie or rive.
 
-I also took tried to make the app pop visually and decided it to brand it with BlackBull. I hope it looks good to you too!
+
+I also tried to make the app pop visually and decided to brand it with BlackBull. I hope it looks good to you too!
+
 # Screenshots and Video
 
 ## Home Screen
@@ -54,81 +57,76 @@ https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/sc
 
 ## Getting Started
 
-After cloning the repository the first thing you'll need is to create your .env file inside secrets with a valid [Themoviedb](https://www.themoviedb.org/)
+After cloning the repository, the first thing you'll need is to create your .env file inside secrets with a valid [Themoviedb](https://www.themoviedb.org/) API key.
 
-in this project we are using --enable-experiment=dot-shorthands for you to be able to run / build you'll have to add that parameter to your run like this
+In this project, we are using `--enable-experiment=dot-shorthands`. For you to be able to run/build, you'll have to add that parameter to your run like this:
 
-`` flutter run --enable-experiment=dot-shorthands ``
+```bash
+flutter run --enable-experiment=dot-shorthands
+```
 
-We are using a Clean Code Arquitecture with BloC as the state management
+We are using Clean Code Architecture with BLoC as the state management solution.
 
-Folder Structure is as follows
+Folder structure is as follows:
 ```plaintext
 lib
 ├── core <----------------------------- Here we put everything shared across the app
-|   ├── di <--------------------------- Dependendy injection
-|   ├── error <------------------------ Error and failures related (here we have the logger service and a error bus) 
-|   ├── network <---------------------- Network Related
+|   ├── di <--------------------------- Dependency injection
+|   ├── error <------------------------ Error and failures related (here we have the logger service and an error bus) 
+|   ├── network <---------------------- Network related
 |   ├── router 
 |   └── services <--------------------- Local services
-├── data <----------------------------- This layer is where data gathered
+├── data <----------------------------- This layer is where data is gathered
 │   ├── mappers <---------------------- Quick transformations so we can move across layers easier
 │   ├── models  <---------------------- Models from DataSources, usually mirror the JSON  
-│   └── repositories <----------------- Implemantation
-├── domain <--------------------------- This Layer is were we pass the prepare the info for the view
-│   ├── entities <--------------------- This usually mirror the info shown in the UI
+│   └── repositories <----------------- Implementation
+├── domain <--------------------------- This layer is where we prepare the info for the view
+│   ├── entities <--------------------- These usually mirror the info shown in the UI
 │   └── repositories <----------------- Abstractions here
 ├── presentation <--------------------- Shared widgets 
-└── src <------------------------------ Convention below we each feature
-    ├── app <-------------------------- The only bloc with no page attached, used to control events that happen across the app (Auth / network / )
+└── src <------------------------------ Convention below: each feature
+    ├── app <-------------------------- The only bloc with no page attached, used to control events that happen across the app (Auth/network)
     ├── favorites\presentation
     ├── home\presentation 
     |   ├── bloc <--------------------- State management
     |   ├── pages <-------------------- For when the feature uses a whole page
-    |   └── widgets <------------------ For reusable widgets (Like favorite button)
+    |   └── widgets <------------------ For reusable widgets (like favorite button)
     ├── movie_detail\presentation
     ├── search\presentation
-    └── main.dart <-------------------- Everything starts Here.
+    └── main.dart <-------------------- Everything starts here
 ```
-note: Test Folder Structure should mirror Lib.
+Note: Test folder structure should mirror lib.
 
 ## Technical Decisions 
 
 **Why clean architecture?**
-I find it very straight forward once you know what goes where. It also forces to think about each layer and how the information should flow.
+I find it very straightforward once you know what goes where. It also forces you to think about each layer and how the information should flow.
 
-**Why Bloc?**
-In the same way bloc is also more verbose, but gives a lot more control once everything is setup. 
+**Why BLoC?**
+In the same way, BLoC is also more verbose, but it gives you a lot more control once everything is set up. 
 
 **Why Dio?**
-Dio offers interceptors which are very useful to have just one place to handle everything HTTP related. Having only 1 place for this helps for logging / debugging
+Dio offers interceptors, which are very useful for having just one place to handle everything HTTP-related. Having only one place for this helps with logging and debugging.
 
-**What is the Global error bus?**
-Its a way for us to dispatch errors from wherever we want to the AppBloC helping with interacting from outside. 
+**What is the global error bus?**
+It's a way for us to dispatch errors from wherever we want to the AppBLoC, helping with interactions from outside. 
 
-**How do you error handle?**
-We used a functional way of doing it called Either Type 
-``
-Either<L, R> represents a value that can be one of two possible types:
+**How do you handle errors?**
+We use a functional approach called the Either type:
 
-Left (L) → usually represents a failure or error.
+`Either<L, R>` represents a value that can be one of two possible types:
+- **Left (L)** → usually represents a failure or error
+- **Right (R)** → represents a success or valid result
 
-Right (R) → represents a success or valid result.
-``
+That way, you are forced to always acknowledge the failure or error path. 
 
-That way you are forced to always aknowledge the Failure or Error path. 
+**Is that why you have safeCalls?**
+Yes! It's a little helper to write less code while keeping the power of this pattern. 
 
-**Is That why the safeCalls?**
-Yeah! a little helper to write less and keep the power of this pattern. 
-
-**Why adding a infinite scroll?**
+**Why add infinite scroll?**
 I wanted a different way to show how to handle loading.
-They way it works is by keeping check of the scroll position, once we are close enough we call for the next page and append to the list. 
+The way it works is by keeping track of the scroll position. Once we are close enough, we call for the next page and append it to the list. 
 
-
-**Is the app prod ready?**
-Its close but not really , no production app would have any APIKEY in the code (no matter if we obfuscate or add it on runtime). 
-most apps would have AUTH which brings a level of complexity that we are skipping here.
-
-
-
+**Is the app production-ready?**
+It's close, but not really. No production app would have any API key in the code (no matter if we obfuscate or add it at runtime). 
+Most apps would have authentication, which brings a level of complexity that we are skipping here.
