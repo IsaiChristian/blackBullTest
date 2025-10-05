@@ -64,7 +64,7 @@ class MovieDetail {
           .toList(),
       homepage: json['homepage'] as String,
       id: json['id'] as int,
-      imdbId: json['imdb_id'] as String,
+      imdbId: json['imdb_id'] != null ? json['imdb_id'] as String : '',
       originalLanguage: json['original_language'] as String,
       originalTitle: json['original_title'] as String,
       overview: json['overview'] as String,
