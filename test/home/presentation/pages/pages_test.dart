@@ -12,7 +12,7 @@ import 'package:black_bull/presentation/widgets/bb_movie_grid.dart';
 import 'package:black_bull/data/repositories/movies_repository_imp.dart';
 import 'package:black_bull/domain/entities/movie_entity.dart';
 
-import 'mocks.mocks.mocks.dart';
+import '../../../mocks.mocks.mocks.dart';
 
 void main() {
   late MockMovieRepositoryImpl mockMovieRepository;
