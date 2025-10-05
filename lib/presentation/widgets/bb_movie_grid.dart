@@ -53,7 +53,7 @@ class BbMovieGrid extends StatelessWidget {
                            child: CachedNetworkImage(
                              imageUrl: 'https://image.tmdb.org/t/p/w154${movieList[index].posterPath}',
                              fit: BoxFit.cover,
-                             placeholder: (context, url) => Center(child: BbLoadingLogo(onlyIcon: true, duration: Duration(microseconds: 300),)),
+                             placeholder: (context, url) => Center(child: BbLoadingLogo(onlyIcon: true, duration: Duration(microseconds: 1500),),),
                              errorWidget: (context, url, error) => Icon(Icons.error),
                            ),
                          ),

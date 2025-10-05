@@ -27,17 +27,25 @@ class FavoritesPageView extends StatelessWidget {
     if (currentState is FavoritesLoaded) {
    
     return Scaffold(
-      appBar: BbAppBar(),
+      appBar: BbAppBar(
+        title: 'Favorite Movies',
+      ),
       body: SingleChildScrollView(
-        
+                         
+
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+             
             Padding(
               padding: .all(24),
               child: 
+              
+              
              BbMovieGrid(movieList: currentState.favoriteMovies),        
             ),
-            
+            if (currentState.favoriteMovies.isEmpty)
+                  Center(child: Text('No favorite movies yet. Start adding some!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center,)),
           ],
         ),
       ),

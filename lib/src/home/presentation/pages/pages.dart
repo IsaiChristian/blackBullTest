@@ -80,22 +80,26 @@ void didChangeDependencies() {
 if (currentState is HomeReady) {
    
     return Scaffold(
-      appBar: BbAppBar(),
+      appBar: BbAppBar(
+        title: 'Popular Movies',
+      ),
       body: SingleChildScrollView(
         controller: _scrollController,
-        child: Column(
-          children: [
-            Padding(
-              padding: .all(24),
-              child: 
-             BbMovieGrid(movieList: currentState.movies),        
-            ),
-            if (currentState.isLoadingMore)
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: BbLoadingLogo(),
-              ),
-          ],
+        child: Padding(
+          padding: const .all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+          
+              BbMovieGrid(movieList: currentState.movies),
+              if (currentState.isLoadingMore)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: BbLoadingLogo(),
+                ),
+            ],
+          ),
         ),
       ),
     );
