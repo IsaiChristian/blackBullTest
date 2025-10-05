@@ -17,21 +17,36 @@ Other things that I decided to practice while doing your test was:
 - Using github actions to perform an analysis for flutter test, (I also printed the results with LCOV)
 
 I also took tried to make the app pop visually and decided it to brand it with BlackBull. I hope it looks good to you too!
+# Screenshots and Video
 
-![blocking_error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/blocking_error.jpg)
-### Screenshots and video 
-![favorites_empty](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/favorites_empty.jpg)
-![favorites_filled](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/favorites_filled.jpg)
+## Home Screen
+| Loading States | Content View | Movie Detail |
+|:---:|:---:|:---:|
+| ![Initial Loading](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_loading_init.jpg) | ![Home](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home.jpg) | ![Movie Detail](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/movie_detail.jpg) |
+| **Initial Loading** | **Home View** | **Movie Detail** |
 
-![home](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home.jpg)
-![home_loading_init](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_loading_init.jpg)
-![home_loading_more](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_loading_more.jpg)
-![home_not_blocking_error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_not_blocking_error.jpg)
-![movie_detail](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/movie_detail.jpg)
+| Loading More | Non-Blocking Error |
+|:---:|:---:|
+| ![Loading More](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_loading_more.jpg) | ![Error State](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/home_not_blocking_error.jpg) |
+| **Loading More Content** | **Non-Blocking Error** |
 
-![search](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search.jpg)
-![search_active](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search_active.jpg)
-![search_query_error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search_query_error.jpg)
+## Favorites
+| Empty State | With Content |
+|:---:|:---:|
+| ![Empty Favorites](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/favorites_empty.jpg) | ![Filled Favorites](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/favorites_filled.jpg) |
+| **Empty Favorites** | **Favorites List** |
+
+## Search
+| Default | Active Search | Error State |
+|:---:|:---:|:---:|
+| ![Search](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search.jpg) | ![Search Active](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search_active.jpg) | ![Search Error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/search_query_error.jpg) |
+| **Search Screen** | **Active Search** | **Search Query Error** |
+
+## Error Handling
+| Blocking Error |
+|:---:|
+| ![Blocking Error](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/blocking_error.jpg) |
+| **Blocking Error Screen** |
 
 ![working_video.mp4](https://raw.githubusercontent.com/IsaiChristian/blackBullTest/refs/heads/main/screenshots/working_video.mp4)
 
