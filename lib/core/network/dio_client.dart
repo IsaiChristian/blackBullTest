@@ -9,7 +9,7 @@ class DioClient {
       connectTimeout: Duration(milliseconds: 5000),
       receiveTimeout: Duration(milliseconds: 5000),
       queryParameters: {
-        'api_key': dotenv.env['TMB_API'], // Access the API key from .env
+        'api_key': dotenv.env['TMB_API'], 
       },
     ),
   );

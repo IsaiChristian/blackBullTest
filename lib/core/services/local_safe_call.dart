@@ -2,7 +2,7 @@ import 'package:black_bull/core/error/logger_service.dart';
 import 'package:dartz/dartz.dart'; // Assuming you're using dartz for Either
 
 // Define a base Failure class and some concrete Failure types
-// (You might already have these from your Dio example)
+
 abstract class Failure {
   final String message;
   Failure(this.message);
@@ -12,7 +12,6 @@ class UnexpectedFailure extends Failure {
   UnexpectedFailure(super.message);
 }
 
-// You might add specific SharedPreferences related failures if needed
 class SharedPreferencesFailure extends Failure {
   SharedPreferencesFailure(super.message);
 }

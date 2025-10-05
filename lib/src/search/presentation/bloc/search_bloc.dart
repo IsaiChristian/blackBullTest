@@ -12,7 +12,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   SearchBloc({required this.movieRepository}) : super(SearchInitial()) {
     on<SearchSubmitted>(_onSearchSubmitted, transformer: restartable());
-    // Add other event handlers like SearchTextChanged if you implement suggestions
   }
 
   Future<void> _onSearchSubmitted(

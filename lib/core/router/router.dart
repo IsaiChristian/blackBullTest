@@ -32,10 +32,10 @@ final GoRouter router = GoRouter(
               57,
               147,
               1,
-            ), // Color for the current tab
-            unselectedItemColor: Colors.grey, // Color for other tabs
+            ), 
+            unselectedItemColor: Colors.grey, 
             selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.bold, // Make the selected label bold
+              fontWeight: FontWeight.bold,
             ),
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Popular'),

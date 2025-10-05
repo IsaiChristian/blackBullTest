@@ -12,9 +12,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final MovieRepositoryImpl movieRepository;
   HomeBloc({required this.movieRepository}) : super(HomeInitial()) {
-    on<HomeEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<HomeEvent>((event, emit) {});
     on<HomeInit>(_homeInit);
     on<HomeShowLoading>(_showLoading, transformer: droppable());
     on<HomeLoadMore>(_homeLoadMore, transformer: droppable());

@@ -14,9 +14,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
   final int movieId;
   MovieDetailBloc({required this.movieRepository, required this.movieId})
     : super(MovieDetailInitial()) {
-    on<MovieDetailEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<MovieDetailEvent>((event, emit) {});
     on<MovieDetailInit>(_movieDetailInit);
   }
 

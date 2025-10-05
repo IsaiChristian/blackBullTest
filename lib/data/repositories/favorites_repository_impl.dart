@@ -16,21 +16,18 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     return safeCall(() async {
       final Either<Failure, List<MovieEntity>> result =
           await getFavoriteMovies();
-      return result.fold(
-        (failure) => throw Exception(
-          failure.message,
-        ), // Re-throw failure as exception to be caught by safeCall
-        (favorites) async {
-          if (!favorites.any((m) => m.id == movie.id)) {
-            favorites.add(movie);
-            await _localStorage.setJsonList<MovieEntity>(
-              _keyFavoriteMovies,
-              favorites,
-            );
-          }
-          return; // Return void
-        },
-      );
+      return result.fold((failure) => throw Exception(failure.message), (
+        favorites,
+      ) async {
+        if (!favorites.any((m) => m.id == movie.id)) {
+          favorites.add(movie);
+          await _localStorage.setJsonList<MovieEntity>(
+            _keyFavoriteMovies,
+            favorites,
+          );
+        }
+        return;
+      });
     });
   }
 
@@ -57,7 +54,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
           _keyFavoriteMovies,
           favorites,
         );
-        return; // Return void
+        return;
       });
     });
   }

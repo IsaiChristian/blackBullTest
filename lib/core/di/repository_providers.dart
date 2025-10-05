@@ -11,7 +11,7 @@ List<SingleChildWidget> repositoryProviders = [
   RepositoryProvider(
     create: (context) => MovieRepositoryImpl(
       context.read<DioClient>().dio,
-    ), // Provide Dio instance here
+    ), 
   ),
   RepositoryProvider(
     create: (context) =>

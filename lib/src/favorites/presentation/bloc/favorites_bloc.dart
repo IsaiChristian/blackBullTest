@@ -14,7 +14,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   FavoritesBloc({required this.favoriteRepositoryImpl})
     : super(FavoritesInitial()) {
     on<FavoritesEvent>((event, emit) {
-      // TODO: implement event handler
     });
     on<LoadFavorites>(_loadFavorites);
     on<AddFavoriteMovie>(_addFavoriteMovie);

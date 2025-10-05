@@ -29,13 +29,9 @@ extension MovieDetailMapper on MovieDetail {
       posterPath: posterPath!,
       title: title,
       releaseDate: releaseDate,
-      synopsis:
-          overview, // 'overview' from Movie maps to 'synopsis' in MovieEntity
-      rating:
-          voteAverage, // 'voteAverage' from Movie maps to 'rating' in MovieEntity
-      genres: genres
-          .map((genre) => genre.name)
-          .toList(), // Extracting genre IDs
+      synopsis: overview,
+      rating: voteAverage,
+      genres: genres.map((genre) => genre.name).toList(),
     );
   }
 }

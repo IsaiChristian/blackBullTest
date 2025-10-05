@@ -46,12 +46,8 @@ class _HomePageViewState extends State<HomePageView> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      // Debounce to prevent multiple rapid calls
         context.read<HomeBloc>().add(HomeShowLoading());
-      
-      
         context.read<HomeBloc>().add(HomeLoadMore());
-      
     }
   }
 
@@ -61,11 +57,7 @@ class _HomePageViewState extends State<HomePageView> {
     _scrollController.dispose();
     super.dispose();
   }
-  @override
-void didChangeDependencies() {
-  super.didChangeDependencies();
- 
-}
+
   @override
   Widget build(BuildContext context) {
     final currentState = context.watch<HomeBloc>().state;
@@ -77,8 +69,7 @@ void didChangeDependencies() {
         ],
       );
     }
-if (currentState is HomeReady) {
-   
+    if (currentState is HomeReady) {
     return Scaffold(
       appBar: BbAppBar(
         title: 'Popular Movies',

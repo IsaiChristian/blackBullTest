@@ -8,7 +8,6 @@ class BbLoadingLogo extends StatefulWidget {
   final bool onlyIcon;
 
   const BbLoadingLogo({
-    // Renamed here
     super.key,
     this.onlyIcon = false,
     this.duration = const Duration(milliseconds: 800),
@@ -17,12 +16,11 @@ class BbLoadingLogo extends StatefulWidget {
   });
 
   @override
-  BbLoadingLogoState createState() => BbLoadingLogoState(); // Renamed here
+  BbLoadingLogoState createState() => BbLoadingLogoState();
 }
 
 class BbLoadingLogoState extends State<BbLoadingLogo>
     with SingleTickerProviderStateMixin {
-  // Renamed here
   late AnimationController _controller;
   late Animation<double> _animation;
 

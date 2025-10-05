@@ -29,7 +29,7 @@ class FailureInterceptor extends Interceptor {
       requestOptions: err.requestOptions,
       response: err.response,
       type: err.type,
-      error: failure, // attach failure here at creation
+      error: failure,
       message: err.message,
     );
     handler.next(newError);

@@ -41,17 +41,14 @@ class _SearchPageViewState extends State<SearchPageView> {
       body: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           bool showResults = state is SearchLoaded;
-          double inputHeight = 60.0; // Height of your search input
-          double initialPageHeigh = 160.0; // Height of your search input
+          double inputHeight = 60.0;
+          double initialPageHeigh = 160.0;
 
           return SafeArea(
-            child:
-                // Error Message
-                (state is SearchError)
+            child: (state is SearchError)
                 ? Center(child: Text('Error: ${state.message}'))
                 : Stack(
                     children: [
-                      // Search Input Field (Animated Position)
                       AnimatedPositioned(
                         duration: Duration(milliseconds: 300),
                         curve: Curves.easeOut,
@@ -98,14 +95,11 @@ class _SearchPageViewState extends State<SearchPageView> {
                         ),
                       ),
 
-                      // Movie Results Grid
                       if (showResults)
                         AnimatedPositioned(
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeOut,
-                          top:
-                              inputHeight +
-                              60, // <--- Define la posición superior
+                          top: inputHeight + 60,
                           left: 0,
                           right: 0,
                           bottom: 0,
@@ -114,12 +108,9 @@ class _SearchPageViewState extends State<SearchPageView> {
                           ),
                         ),
 
-                      // Loading Indicator
                       if (state is SearchLoading)
                         Positioned(
-                          top:
-                              inputHeight +
-                              180, // <--- Define la posición superior
+                          top: inputHeight + 180,
                           left: 0,
                           right: 0,
                           bottom: 0,

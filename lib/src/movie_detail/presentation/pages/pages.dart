@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieDetailPage extends StatelessWidget {
-  static const String routeName = '/movieDetail'; // Define the route name here
+  static const String routeName = '/movieDetail';
 
   final int id;
   const MovieDetailPage({super.key, required this.id});

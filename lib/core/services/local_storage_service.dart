@@ -6,7 +6,6 @@ abstract class JsonConvertible {
   Map<String, dynamic> toJson();
 }
 
-// You can create a type alias for a function that creates an object from JSON
 typedef FromJsonFactory<T> = T Function(Map<String, dynamic> json);
 
 class LocalStorageService {
@@ -39,7 +38,6 @@ class LocalStorageService {
     return _preferences!.setStringList(key, jsonStringList);
   }
 
-  // Generic method to get a list of objects (requires a factory function)
   Future<List<T>> getJsonList<T extends JsonConvertible>(
     String key,
     FromJsonFactory<T> fromJson,
