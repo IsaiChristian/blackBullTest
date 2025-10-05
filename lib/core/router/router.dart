@@ -1,5 +1,6 @@
 import 'package:black_bull/src/favorites/presentation/pages/pages.dart';
 import 'package:black_bull/src/home/presentation/pages/pages.dart';
+import 'package:black_bull/src/movie_detail/presentation/pages/pages.dart';
 import 'package:black_bull/src/search/presentation/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -67,6 +68,12 @@ final GoRouter router = GoRouter(
           builder: (context, state) => FavoritesPage(),
         ),
       ],
+    ),
+    GoRoute(
+      name: 'movieDetail',
+      path: '/movieDetail/:id',
+      builder: (context, state) =>
+          MovieDetailPage(id: int.parse(state.pathParameters['id']!)),
     ),
   ],
 );

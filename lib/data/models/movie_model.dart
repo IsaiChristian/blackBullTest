@@ -13,6 +13,7 @@ class MovieModel {
   final bool video;
   final double voteAverage;
   final int voteCount;
+  final List<String> genres;
 
   const MovieModel({
     required this.adult,
@@ -29,6 +30,7 @@ class MovieModel {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    this.genres = const [],
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {

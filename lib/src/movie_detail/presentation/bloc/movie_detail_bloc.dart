@@ -1,14 +1,36 @@
+import 'dart:async';
 
-  import 'package:flutter_bloc/flutter_bloc.dart';
-  import 'package:equatable/equatable.dart';
-  
-  part 'movie_detail_event.dart';
-  part 'movie_detail_state.dart';
-  
-  class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
-    MovieDetailBloc() : super(MovieDetailInitial()) {
-      on<MovieDetailEvent>((event, emit) {
-        // TODO: implement event handler
-      });
-    }
+import 'package:black_bull/core/error/logger_service.dart';
+import 'package:black_bull/data/repositories/movies_repository_imp.dart';
+import 'package:black_bull/domain/entities/movie_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+
+part 'movie_detail_event.dart';
+part 'movie_detail_state.dart';
+
+class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
+  final MovieRepositoryImpl movieRepository;
+  final int movieId;
+  MovieDetailBloc({required this.movieRepository, required this.movieId})
+    : super(MovieDetailInitial()) {
+    on<MovieDetailEvent>((event, emit) {
+      // TODO: implement event handler
+    });
+    on<MovieDetailInit>(_movieDetailInit);
   }
+
+  FutureOr<void> _movieDetailInit(
+    MovieDetailInit event,
+    Emitter<MovieDetailState> emit,
+  ) async {
+    emit(MovieDetailLoading());
+
+    final movieDetail = await movieRepository.getMovie(id: movieId);
+
+    movieDetail.fold((l) {
+      LoggerService.error("MovieDetailBloc", 'Failed to fetch movie details');
+      emit(MovieDetailError(message: 'Failed to fetch movie details'));
+    }, (r) => emit(MovieDetailLoaded(r)));
+  }
+}
