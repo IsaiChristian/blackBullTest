@@ -1,3 +1,4 @@
+import 'package:black_bull/core/error/logger_service.dart';
 import 'package:dartz/dartz.dart'; // Assuming you're using dartz for Either
 
 // Define a base Failure class and some concrete Failure types
@@ -14,13 +15,6 @@ class UnexpectedFailure extends Failure {
 // You might add specific SharedPreferences related failures if needed
 class SharedPreferencesFailure extends Failure {
   SharedPreferencesFailure(super.message);
-}
-
-// A simple LoggerService stub for demonstration
-class LoggerService {
-  static void error(String tag, String message, StackTrace? st) {
-    print('ERROR [$tag]: $message\n$st');
-  }
 }
 
 /// Safely executes a synchronous SharedPreferences operation.
