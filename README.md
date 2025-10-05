@@ -32,7 +32,7 @@ in this project we are using --enable-experiment=dot-shorthands for you to be ab
 We are using a Clean Code Arquitecture with BloC as the state management
 
 Folder Structure is as follows
-
+```plaintext
 lib
 ├── core <----------------------------- Here we put everything shared across the app
 |   ├── di <--------------------------- Dependendy injection
@@ -58,7 +58,7 @@ lib
     ├── movie_detail\presentation
     ├── search\presentation
     └── main.dart <-------------------- Everything starts Here.
-
+```
 note: Test Folder Structure should mirror Lib.
 
 
