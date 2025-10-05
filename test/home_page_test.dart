@@ -27,7 +27,7 @@ void main() {
       (i) => MovieEntity(
         id: 1,
         title: 'Test Movie $i',
-        posterPath: '/test.jpg',
+        posterPath: '',
         releaseDate: '2023-01-01',
         synopsis: 'A test movie',
         rating: 8.5,
@@ -61,6 +61,32 @@ void main() {
 
     // Assert
     expect(find.byType(BbLoadingLogo), findsOneWidget);
+  });
+  testWidgets('Shows movie grid when HomeReady state', (
+    WidgetTester tester,
+  ) async {
+    final fakeResponse = PopularMoviesResponseEntity(
+      results: movies,
+      page: 1,
+      totalPages: 2,
+      totalResults: 20,
+    );
+
+    // Stub repository with proper parameter
+    when(
+      mockMovieRepository.getPopularMovies(page: 1),
+    ).thenAnswer((_) async => Right(fakeResponse));
+    homeBloc.emit(
+      HomeReady(movies: fakeResponse.results, page: 1, totalPages: 2),
+    );
+    await tester.pumpWidget(makeTestableWidget());
+
+    // Allow Bloc to emit HomeReady
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BbMovieGrid), findsOneWidget);
+    expect(find.text('Test Movie 1'), findsOneWidget);
+    expect(find.text('Test Movie 2'), findsOneWidget);
   });
 
   testWidgets('Shows error when HomeError state', (WidgetTester tester) async {

@@ -46,7 +46,7 @@ class BbMovieGrid extends StatelessWidget {
                            child: Icon(Icons.movie, size: 64, color: Colors.grey[700]),
                          ),
                        ),
-                       Center(
+                       if(movieList[index].posterPath != '' )Center(
                          child: SizedBox(
                            width: double.infinity,
                            
