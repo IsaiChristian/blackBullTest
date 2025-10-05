@@ -84,6 +84,7 @@ if (currentState is HomeReady) {
         title: 'Popular Movies',
       ),
       body: SingleChildScrollView(
+        key: ValueKey('home_scroll_view'),
         controller: _scrollController,
         child: Padding(
           padding: const .all(24.0),

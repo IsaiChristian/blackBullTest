@@ -88,6 +88,41 @@ void main() {
     expect(find.text('Test Movie 1'), findsOneWidget);
     expect(find.text('Test Movie 2'), findsOneWidget);
   });
+  testWidgets('Triggers load more when scrolled near bottom', (
+    WidgetTester tester,
+  ) async {
+    final fakeResponse = PopularMoviesResponseEntity(
+      results: movies,
+      page: 1,
+      totalPages: 2,
+      totalResults: 20,
+    );
+
+    when(
+      mockMovieRepository.getPopularMovies(page: anyNamed('page')),
+    ).thenAnswer((_) async => Right(fakeResponse));
+
+    homeBloc.emit(
+      HomeReady(
+        movies: fakeResponse.results,
+        page: 1,
+        totalPages: 2,
+        isLoadingMore: false,
+      ),
+    );
+    await tester.pumpWidget(makeTestableWidget());
+
+    // Allow Bloc to emit HomeReady
+    await tester.pumpAndSettle();
+    // Scroll to bottom
+    final scrollable = find.byKey(ValueKey('home_scroll_view'));
+    expect(scrollable, findsOneWidget);
+    await tester.drag(scrollable, const Offset(0, -6000));
+    await tester.pumpAndSettle();
+
+    // Verify that HomeLoadMore event was added (you can verify bloc events using mock bloc)
+    verify(mockMovieRepository.getPopularMovies(page: 2)).called(1);
+  });
 
   testWidgets('Shows error when HomeError state', (WidgetTester tester) async {
     // Arrange: make repository throw error
