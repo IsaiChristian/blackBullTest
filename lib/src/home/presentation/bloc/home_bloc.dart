@@ -25,7 +25,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final popularMovies = await movieRepository.getPopularMovies();
 
-    popularMovies.fold((l) => emit(HomeError()), (r) => emit(HomeError()));
+    popularMovies.fold(
+      (l) => emit(HomeError()),
+      (r) => emit(
+        HomeReady(movies: r.results, page: r.page, totalPages: r.totalPages),
+      ),
+    );
   }
 
   FutureOr<void> _homeLoadMore(
